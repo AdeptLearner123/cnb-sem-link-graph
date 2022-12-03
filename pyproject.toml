@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "cnb-sem-link-graph"
+version = "0.1.0"
+description = ""
+authors = ["Nalu Zou"]
+readme = "README.md"
+packages = [{include = "cnb_sem_link_graph"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+tqdm = "^4.64.1"
+
+[tool.poetry.scripts]
+format                          = "tasks:format"
+
+disambiguate-domains            = "cnb_sem_link_graph.disambiguate_sem_links:disambiguate_domains"
+disambiguate-classes            = "cnb_sem_link_graph.disambiguate_sem_links:disambiguate_classes"
+disambiguate-synonyms           = "cnb_sem_link_graph.disambiguate_synonyms:main"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+isort = "^5.10.1"
+pytest = "^7.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
