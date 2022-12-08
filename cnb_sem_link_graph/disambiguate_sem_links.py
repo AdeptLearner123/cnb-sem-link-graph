@@ -4,7 +4,7 @@ from tqdm import tqdm
 from config import DOMAIN_TO_SENSE, CLASS_TO_SENSE, DICTIONARY
 
 
-POS_ORDER = ["noun", "adjective", "verb"]
+POS_ORDER = ["noun", "adjective", "verb", "proper"]
 
 def get_sem_link_words(dictionary, sem_link_key):
     sem_link_words = set()
@@ -20,9 +20,9 @@ def get_sense_possibilities(dictionary, sem_link_words):
     for sense_id, entry in tqdm(dictionary.items()):
         if entry["pos"] not in POS_ORDER:
             continue
-
+        
         word_forms = [ word_form.lower() for word_form in entry["wordForms"] ]
-
+        
         for sem_link_word in sem_link_words:
             if sem_link_word.lower() in word_forms:
                 sem_link_senses[sem_link_word].append(sense_id)
@@ -59,9 +59,7 @@ def disambiguate_sem_link(out_file, sem_link_key):
         dictionary = json.loads(file.read())
 
     sem_link_words = get_sem_link_words(dictionary, sem_link_key)
-    print("Buddhism", "buddhism" in sem_link_words)
     sem_link_senses = get_sense_possibilities(dictionary, sem_link_words)
-    print("Buddhism", "buddhism" in sem_link_senses, sem_link_senses["buddhism"])
     sem_link_word_to_sense = assign_senses(dictionary, sem_link_senses, sem_link_key)
 
     print("Unassigned sem links", list(sem_link_word_to_sense.values()).count(None), "/", len(sem_link_word_to_sense))
